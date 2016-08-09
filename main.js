@@ -1,25 +1,21 @@
-function growtree (clickEvent) {
-	// set object
-	var tree = new Object ();
-	tree.character = textElementChar.value;
-	tree.height = textElementNum.value;
+function growtree (objTree) {
 	//make tree parts
-	var treePiece = [tree.character];
-	var treePiecePerLine = tree.character;
-	var treeIncreasePerLine = tree.character + tree.character;
+	var treePiece = [objTree.character];
+	var treePiecePerLine = objTree.character;
+	var treeIncreasePerLine = objTree.character + objTree.character;
 	var treeSpace = [""];
 	var spacePerline = "";
-	for (var i = 1; i <=tree.height; i++) {
+	for (var i = 1; i <=objTree.height; i++) {
 		treePiecePerLine += treeIncreasePerLine;
 		treePiece.push(treePiecePerLine);
-		//next line is a alternative way to generate treePiece
+		//next line is an alternative way to generate treePiece
 		// treePiece[i] = treePiece[i-1] + treeIncreasePerLine;
 		spacePerline += "&nbsp";//for html to display space properly
 		treeSpace.unshift(spacePerline);
 	}
 	//print on html
 	var preElement = document.createElement("pre");
-	for (var i = 0; i <=tree.height; i++) {
+	for (var i = 0; i < objTree.height; i++) {
 		var newDiv = document.createElement("div");
 		newDiv.innerHTML =  treeSpace[i] + treePiece[i];
 		divElement.appendChild(preElement).appendChild(newDiv);
@@ -27,11 +23,11 @@ function growtree (clickEvent) {
 	//for console.log to display space properly
 	var treeSpaceInConsole = [""];
 	var spacePerlineInConsole = "";
-	for (var i = 1; i <=tree.height; i++) {
+	for (var i = 1; i <=objTree.height; i++) {
 		spacePerlineInConsole += " ";
 		treeSpaceInConsole.unshift(spacePerlineInConsole);
 	}
-	for (var i = 0; i <=tree.height; i++) {	
+	for (var i = 0; i < objTree.height; i++) {	
 		console.log(treeSpaceInConsole[i] + treePiece[i]);
 	}//end of console display
 } //end of growtree function
@@ -48,26 +44,47 @@ function clearTextarea() {
 var divElement = document.getElementById("chartree");
 var buttonGrowTree = document.getElementById("growtree");
 var buttonClear = document.getElementById("clearinputbox");
-// var textElement = document.getElementsByClassName("input");
 var textElementChar = document.getElementById("character");
 var textElementNum = document.getElementById("height");
 
+// set object
+var tree = new Object ();
+tree.character = "";
+tree.height = "";
 
 // Assign a function to be executed when the button is clicked
-buttonGrowTree.addEventListener("click", growtree);
+buttonGrowTree.addEventListener("click", function() {
+		if (tree.character === "" || tree.height === "") {
+    		alert("Both fields must have a value!");
+    	}
+    	else {
+        growtree(tree);
+	    }
+	}
+);
 buttonClear.addEventListener("click", clearTextarea);
 
 // handles text enter event
 textElementChar.addEventListener("keyup", function(event) {
     event.preventDefault();
+    tree.character = textElementChar.value;
     if (event.keyCode == 13) {
-        growtree(event);
+    	if (tree.character === "" || tree.height === "") {
+    		alert("Both fields must have a value!");
+    	}else {
+        growtree(tree);
+	    }
     }
 })
 
 textElementNum.addEventListener("keyup", function(event) {
     event.preventDefault();
+	tree.height = textElementNum.value;
     if (event.keyCode == 13) {
-        growtree(event);
+    	if (tree.character === "" || tree.height === "") {
+    		alert("Both fields must have a value!");
+    	}else {
+        growtree(tree);
+	    }
     }
 })
